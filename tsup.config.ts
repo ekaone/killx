@@ -19,7 +19,7 @@ export default defineConfig([
     clean: false,
     shims: true,
     sourcemap: false,
-    banner: { js: "#!/usr/bin/env node" },
+    banner: {},
     outDir: "dist",
     target: "node18",
   },

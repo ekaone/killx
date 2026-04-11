@@ -40,7 +40,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "pnpm typecheck && pnpm tsup",
+    "build": "pnpm typecheck && pnpm clean && pnpm tsup",
     "dev": "tsup --watch",
     "clean": "rimraf dist",
     "typecheck": "tsc --noEmit",
