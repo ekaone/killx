@@ -1,9 +1,12 @@
 #!/usr/bin/env node
+import { createRequire } from "node:module";
 import { killx } from "../src/kill.js";
 import { inspect, flattenTree } from "../src/inspect.js";
 import type { KillOptions, ProcessInfo } from "../src/types.js";
 
-// ─── Arg parsing (zero-dep, no minimist) ─────────────────────────────────────
+const require = createRequire(import.meta.url);
+
+// ─── Arg parsing (zero-dep, no minimist)
 
 type ParsedArgs = {
   command: "kill" | "tree" | "inspect";
@@ -15,6 +18,7 @@ type ParsedArgs = {
 };
 
 function parseArgs(argv: string[]): ParsedArgs {
+  const { version, name } = require("../package.json");
   const args = argv.slice(2); // strip node + script
 
   let command: ParsedArgs["command"] = "kill";
@@ -36,9 +40,26 @@ function parseArgs(argv: string[]): ParsedArgs {
       continue;
     }
 
-    if (arg === "--dry-run") { dryRun = true; i++; continue; }
-    if (arg === "--force")   { force = true;  i++; continue; }
-    if (arg === "--json")    { json = true;   i++; continue; }
+    if (arg === "--version" || arg === "-v") {
+      console.log(`${name} v${version}`);
+      process.exit(0);
+    }
+
+    if (arg === "--dry-run") {
+      dryRun = true;
+      i++;
+      continue;
+    }
+    if (arg === "--force") {
+      force = true;
+      i++;
+      continue;
+    }
+    if (arg === "--json") {
+      json = true;
+      i++;
+      continue;
+    }
 
     if (arg === "--signal") {
       i++;
@@ -73,7 +94,7 @@ function parseArgs(argv: string[]): ParsedArgs {
   return { command, pid, dryRun, signal, force, json };
 }
 
-// ─── Output helpers ───────────────────────────────────────────────────────────
+// ─── Output helpers
 
 function printUsageAndExit(): never {
   console.log(`
@@ -89,6 +110,7 @@ Usage:
   killx inspect <pid> --json      Return tree as JSON
 
 Flags:
+  --version, -v Print version and exit
   --dry-run     Preview only, do not kill
   --signal      Signal to send (default: SIGTERM)
   --force       Force kill with SIGKILL fallback
@@ -114,7 +136,7 @@ function renderTree(node: ProcessInfo, prefix = "", isLast = true): void {
   });
 }
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
+// ─── Main
 
 async function main() {
   const { command, pid, dryRun, signal, force, json } = parseArgs(process.argv);
@@ -153,11 +175,14 @@ async function main() {
         JSON.stringify(
           {
             dryRun: true,
-            willKill: (result!.skipped ?? []).map((p) => ({ pid: p.pid, name: p.name })),
+            willKill: (result!.skipped ?? []).map((p) => ({
+              pid: p.pid,
+              name: p.name,
+            })),
           },
           null,
-          2
-        )
+          2,
+        ),
       );
     } else {
       console.log(JSON.stringify(result, null, 2));

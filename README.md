@@ -2,8 +2,9 @@
 
 > Zero-dependency cross-platform process tree killer.
 
-[![npm](https://img.shields.io/npm/v/@ekaone/killx)](https://www.npmjs.com/package/@ekaone/killx)
-[![license](https://img.shields.io/npm/l/@ekaone/killx)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/@ekaone/killx.svg)](https://www.npmjs.com/package/@ekaone/killx)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 
 ---
 
