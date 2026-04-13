@@ -1,8 +1,6 @@
-# > Under Development, not release yet, currently Test Files: 3 passed & Tests: 20 passed
-
 # @ekaone/killx
 
-> Zero-dependency cross-platform process tree killer with dry-run, structured output, and modern Promise API.
+> Zero-dependency cross-platform process tree killer.
 
 [![npm](https://img.shields.io/npm/v/@ekaone/killx)](https://www.npmjs.com/package/@ekaone/killx)
 [![license](https://img.shields.io/npm/l/@ekaone/killx)](./LICENSE)
@@ -30,6 +28,10 @@ pnpm add @ekaone/killx
 
 # Global CLI
 pnpm add -g @ekaone/killx
+
+yarn global add @ekaone/killx
+
+npm install -g @ekaone/killx
 ```
 
 ---
