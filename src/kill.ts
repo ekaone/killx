@@ -121,9 +121,13 @@ async function killWindows(
     return { success: true, killed: [], skipped };
   }
 
-  // Treat SIGKILL as force on Windows
-  const force = opts.force || opts.signal === "SIGKILL";
-  const ok = taskkillTree(pid, force);
+  // Use force if requested via flag or SIGKILL
+  const wantForce = opts.force || opts.signal === "SIGKILL";
+  // Try graceful first, auto-retry with force if needed
+  let ok = taskkillTree(pid, wantForce);
+  if (!ok && !wantForce) {
+    ok = taskkillTree(pid, true);
+  }
   if (ok) {
     const result: KillResult = { success: true, killed: toKill };
     if (skipped.length > 0) result.skipped = skipped;
